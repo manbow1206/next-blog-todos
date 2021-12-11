@@ -1,9 +1,9 @@
 import Layout from '../components/Layout';
 import Link from 'next/link';
 
-export default function TaskPage() {
+export default function BlogPage() {
   return (
-    <Layout title='Task page '>
+    <Layout title='Blog page '>
       <Link href='/main-page' passHref>
         <div className='flex cursor-pointer mt-12'>
           <svg

@@ -1,16 +1,44 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { Cookie } from 'universal-cookie';
 import { LockClosedIcon } from '@heroicons/react/solid';
 
-export default function Example() {
+const cookie = new Cookie();
+
+export default function Auth() {
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState('');
+
+  const login = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create`, {
+        method: 'POST',
+        body: JSON.stringify({ username: username, password: password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (res.status === 400) {
+            throw 'authentication faild';
+          } else if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((data) => {
+          const options = { path: '/' };
+          cookie.set('access_token', data.access, options);
+        });
+      router.push('/main-page');
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div>

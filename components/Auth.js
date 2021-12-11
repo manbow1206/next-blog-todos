@@ -37,6 +37,32 @@ export default function Auth() {
     }
   };
 
+  const authUser = async (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      login();
+    } else {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/register`, {
+          method: 'POST',
+          body: JSON.stringify({ username: username, password: password }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => {
+          if (res.status === 400) {
+            throw 'authentication faild';
+          } else if (res.ok) {
+            return res.json();
+          }
+        });
+        login();
+      } catch (err) {
+        alert(err);
+      }
+    }
+  };
+
   return (
     <>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>

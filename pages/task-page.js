@@ -27,3 +27,11 @@ export default function TaskPage() {
     </Layout>
   );
 }
+
+export async function getStaticProps() {
+  const staticfilterdTasks = await getAllTasksData();
+
+  return {
+    props: { staticfilterdTasks },
+  };
+}

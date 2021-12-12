@@ -10,7 +10,7 @@ const apiUrl = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/list-task/`;
 
 export default function TaskPage({ staticfilterdTasks }) {
   const { data: tasks, mutate } = useSWR(apiUrl, fetcher, {
-    initialData: staticfilterdTasks,
+    fallbackData: staticfilterdTasks,
   });
 
   const filterdTasks = tasks?.sort(
@@ -56,5 +56,6 @@ export async function getStaticProps() {
 
   return {
     props: { staticfilterdTasks },
+    revalidate: 3,
   };
 }
